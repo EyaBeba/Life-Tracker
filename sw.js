@@ -1,7 +1,10 @@
-const CACHE = 'mylife-v1';
+const CACHE = 'mylife-v2';
 const FILES = [
-  '/index.html',
-  '/manifest.json'
+  './',
+  './index.html',
+  './manifest.json',
+  './sw.js',
+  './icon.png'
 ];
 
 self.addEventListener('install', e => {
@@ -22,6 +25,9 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request).catch(() => caches.match('/index.html')))
+    caches.match(e.request).then(cached => {
+      if (cached) return cached;
+      return caches.match('./index.html');
+    })
   );
 });
